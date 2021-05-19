@@ -3,6 +3,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 import math
 
+# TODO:
+# hardcodare altre coordinate x=0, y=0
+
 
 def wavefunction(x, y, z, state):
     R = 0                      # parte radiale
@@ -84,9 +87,9 @@ print('1: n=1;l=0;m=0 \n' +
       '14: n=3;l=2;m=+-2 I')
 
 # parametri
-N = int(1e4)      # numero punti (max 10'000)
+N = int(5e3)      # numero punti (max 10'000)
 L = float(20)     # dimensione del "box" contente l'atomo
-S = int(8)        # stato da disegnare
+S = int(6)        # stato da disegnare
 
 # salviamo le posizioni su un file di testo per velocizzare il plot
 file = open('positions.txt', 'w')
@@ -100,9 +103,10 @@ i = 0
 while (i < N):
     x = round((random.uniform(0, 1)-0.5)*L*2, 6)
     y = round((random.uniform(0, 1)-0.5)*L*2, 6)
-    z = round((random.uniform(0, 1)-0.5)*L*2, 6)
+    z = round((random.uniform(0, 0))*L*2, 6)
     psi = round(wavefunction(x, y, z, S), 6)
-    rnd = round(random.uniform(0, 1), 6)
+    rnd = round(random.uniform(0, 0.5), 6)  # riduciamo il numero random per
+    # disegnare meno punti
     if(rnd <= (psi*psi)):
         file.write('{}'.format(x*0.529)+' '+'{}'.format(y*0.529) +
                    ' '+'{}'.format(z*0.529)+' '+'{}'.format(psi*psi)+'\n')
@@ -117,23 +121,17 @@ Y = text[:, 1]
 Z = text[:, 2]
 
 # plot
-
-fig = plt.figure(figsize=(10, 30))
+fig = plt.figure(figsize=(10, 10))
 # ax = fig.add_subplot(111, projection='3d')
 
 # piano XY
-ax = fig.add_subplot(131)
-ax.scatter(X, Y, s=.5, marker='.', color='black')
+ax = fig.add_subplot()
+# ax = fig.add_subplot(131)
+ax.scatter(X, Y, s=1, marker='.', color='black')
+ax.set_xlim([-10, 10])
+ax.set_ylim([-10, 10])
 ax.set_aspect(1)
-
-# piano XY
-ax = fig.add_subplot(132)
-ax.scatter(Y, Z, s=.5, marker='.', color='black')
-ax.set_aspect(1)
-
-# piano XY
-ax = fig.add_subplot(133)
-ax.scatter(X, Z, s=.5, marker='.', color='black')
-ax.set_aspect(1)
+ax.set_xticks([])
+ax.set_yticks([])
 
 plt.show()
